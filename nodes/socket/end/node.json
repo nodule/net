@@ -1,0 +1,19 @@
+{
+  "name": "end",
+  "ns": "socket",
+  "title": "End Socket",
+  "async": true,
+  "description": "End Socket",
+  "phrases": {
+    "active": "Closing socket"
+  },
+  "ports": {
+    "input": {
+      "in": {
+        "title": "Socket",
+        "type": "Socket",
+        "async": true
+      }
+    }
+  }
+}

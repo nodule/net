@@ -204,7 +204,27 @@
           }
         }
       },
-      "fn": "on.input.in = function() {\n  output({\n    out: $.write('in', $.in),\n    address: $.create($.address())\n  });\n}\n"
+      "fn": "on.input.in = function() {\n  output({\n    out: $.write('in', $.in),\n    address: $.create($.in.address())\n  });\n}\n"
+    },
+    {
+      "name": "end",
+      "ns": "socket",
+      "title": "End Socket",
+      "async": true,
+      "description": "End Socket",
+      "phrases": {
+        "active": "Closing socket"
+      },
+      "ports": {
+        "input": {
+          "in": {
+            "title": "Socket",
+            "type": "Socket",
+            "async": true
+          }
+        }
+      },
+      "fn": "on.input.in = function() {\n  $.in.end();\n  // ... destroy packet\n}\n"
     },
     {
       "name": "pause",

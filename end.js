@@ -1,11 +1,11 @@
 module.exports = {
-  name: "address",
+  name: "end",
   ns: "socket",
-  title: "Address",
+  title: "End Socket",
   async: true,
-  description: "Socket Address",
+  description: "End Socket",
   phrases: {
-    active: "Retrieving socket address"
+    active: "Closing socket"
   },
   ports: {
     input: {
@@ -15,26 +15,14 @@ module.exports = {
         async: true,
         fn: function __IN__(data, source, state, input, $, output) {
           var r = function() {
-            output({
-              out: $.write('in', $.in),
-              address: $.create($.in.address())
-            });
+            $.in.end();
+            // ... destroy packet
           }.call(this);
           return {
             state: state,
             return: r
           };
         }
-      }
-    },
-    output: {
-      out: {
-        title: "Socket",
-        type: "Socket"
-      },
-      address: {
-        title: "Address",
-        type: "object"
       }
     }
   },

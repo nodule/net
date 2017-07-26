@@ -1,6 +1,6 @@
 on.input.in = function() {
   output({
     out: $.write('in', $.in),
-    address: $.create($.address())
+    address: $.create($.in.address())
   });
 }
