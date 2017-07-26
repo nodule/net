@@ -1,0 +1,34 @@
+{
+  "name": "write",
+  "ns": "net/socket",
+  "title": "Socket Write",
+  "async": true,
+  "description": "Write to socket",
+  "phrases": {
+    "active": "Writing to socket"
+  },
+  "ports": {
+    "input": {
+      "data": {
+        "title": "Data",
+        "type": "any"
+      },
+      "encoding": {
+        "title": "Encoding",
+        "type": "any",
+        "default": "utf8"
+      },
+      "in": {
+        "title": "Socket",
+        "type": "Socket",
+        "async": true
+      }
+    },
+    "output": {
+      "out": {
+        "title": "Socket",
+        "type": "Socket"
+      }
+    }
+  }
+}

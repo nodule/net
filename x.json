@@ -1,0 +1,394 @@
+{
+  "name": "net",
+  "description": "Net for Chiχ",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nodule/net.git"
+  },
+  "nodes": [
+    {
+      "name": "createConnection",
+      "ns": "net",
+      "description": "createConnection",
+      "phrases": {
+        "active": "establishing connection"
+      },
+      "ports": {
+        "input": {
+          "connectListener": {
+            "type": "function",
+            "required": false
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "timeout": {
+                "type": "number",
+                "required": false
+              },
+              "fd": {
+                "title": "File Descriptor",
+                "type": "number",
+                "required": false
+              },
+              "allowHalfOpen": {
+                "type": "boolean",
+                "required": false
+              },
+              "readable": {
+                "type": "boolean",
+                "required": false
+              },
+              "writeable": {
+                "type": "boolean",
+                "required": false
+              },
+              "port": {
+                "type": "boolean",
+                "required": true
+              },
+              "host": {
+                "type": "string",
+                "default": "localhost"
+              },
+              "localAddress": {
+                "type": "string",
+                "required": false
+              },
+              "localPort": {
+                "type": "number",
+                "required": false
+              },
+              "family": {
+                "type": "enum",
+                "enum": [
+                  4,
+                  6
+                ],
+                "default": 4
+              },
+              "hints": {
+                "type": "number",
+                "required": false
+              },
+              "lookup": {
+                "type": "function",
+                "required": false
+              }
+            }
+          },
+          "localVideoEl": {
+            "title": "Local Video Element",
+            "type": "any",
+            "required": true
+          },
+          "remoteVideosEl": {
+            "title": "Remote Videos Element",
+            "type": "any",
+            "required": true
+          },
+          "autoRequestMedia": {
+            "title": "Auto Request Media",
+            "type": "boolean",
+            "default": false
+          },
+          "autoAdjustMic": {
+            "title": "Auto Adjust Microphone",
+            "type": "boolean",
+            "default": false
+          },
+          "media": {
+            "type": "object",
+            "properties": {
+              "audio": {
+                "title": "Audio?",
+                "type": "boolean",
+                "default": true
+              },
+              "video": {
+                "title": "Video?",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          },
+          "detectSpeakingEvents": {
+            "title": "Detect Speaking Events",
+            "type": "boolean",
+            "default": true
+          },
+          "enableDataChannels": {
+            "title": "Enable Data Channels",
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "output": {
+          "out": {
+            "title": "Socket",
+            "type": "Socket"
+          },
+          "close": {
+            "title": "Close",
+            "type": "boolean"
+          },
+          "connect": {
+            "title": "Connect",
+            "type": "any"
+          },
+          "data": {
+            "title": "Data",
+            "type": "any"
+          },
+          "drain": {
+            "title": "Drain",
+            "type": "any"
+          },
+          "end": {
+            "title": "End",
+            "type": "any"
+          },
+          "lookup": {
+            "title": "Lookup",
+            "type": "object",
+            "properties": {
+              "error": {
+                "type": "Error"
+              },
+              "address": {
+                "type": "string"
+              },
+              "family": {
+                "type": "string"
+              },
+              "host": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "dependencies": {
+        "npm": {
+          "net": "internal"
+        }
+      },
+      "fn": "output = function (cb) {\n  var client = net.createConnection($.options, function () {\n    cb({out: $.create(client)});\n  });\n\n  client.on('connect', function () {\n    cb({connect: $.create(client)});\n  });\n\n  client.on('data', function (data) {\n    cb({data: $.create(data)});\n  });\n\n  client.on('drain', function () {\n    cb({drain: $.create(client)});\n  });\n\n  client.on('end', function () {\n    cb({end: $.create(client)});\n  });\n\n  client.on('error', function (error) {\n    cb({error: $.create(error)});\n  });\n\n  client.on('lookup', function (err, address, family, host) {\n    cb({\n      lookup: $.create({\n        error: err,\n        address: address,\n        family: family,\n        host: host\n      })\n    });\n  });\n\n  client.on('timeout', function () {\n    cb({timeout: $.create(client)});\n  });\n};\n"
+    },
+    {
+      "name": "address",
+      "ns": "net/socket",
+      "title": "Address",
+      "async": true,
+      "description": "Socket Address",
+      "phrases": {
+        "active": "Retrieving socket address"
+      },
+      "ports": {
+        "input": {
+          "in": {
+            "title": "Socket",
+            "type": "Socket",
+            "async": true
+          }
+        },
+        "output": {
+          "out": {
+            "title": "Socket",
+            "type": "Socket"
+          },
+          "address": {
+            "title": "Address",
+            "type": "object"
+          }
+        }
+      },
+      "fn": "on.input.in = function() {\n  output({\n    out: $.write('in', $.in),\n    address: $.create($.address())\n  });\n}\n"
+    },
+    {
+      "name": "pause",
+      "ns": "net/socket",
+      "title": "Pause",
+      "async": true,
+      "description": "Pause Socket",
+      "phrases": {
+        "active": "Pausing socket"
+      },
+      "ports": {
+        "input": {
+          "in": {
+            "title": "Socket",
+            "type": "Socket",
+            "async": true
+          }
+        },
+        "output": {
+          "out": {
+            "title": "Socket",
+            "type": "Socket"
+          }
+        }
+      },
+      "fn": "on.input.in = function() {\n  $.in.pause();\n  output({out: $.write('in', $.in)});\n}\n"
+    },
+    {
+      "name": "resume",
+      "ns": "net/socket",
+      "title": "Resume",
+      "async": true,
+      "description": "Resume Socket",
+      "phrases": {
+        "active": "Resuming socket"
+      },
+      "ports": {
+        "input": {
+          "in": {
+            "title": "Socket",
+            "type": "Socket",
+            "async": true
+          }
+        },
+        "output": {
+          "out": {
+            "title": "Socket",
+            "type": "Socket"
+          }
+        }
+      },
+      "fn": "on.input.in = function() {\n  $.in.resume();\n  output({out: $.write('in', $.in)});\n}\n"
+    },
+    {
+      "name": "setEncoding",
+      "ns": "net/socket",
+      "title": "Set Encoding",
+      "async": true,
+      "description": "Set Socket Encoding",
+      "phrases": {
+        "active": "Set socket encoding"
+      },
+      "ports": {
+        "input": {
+          "encoding": {
+            "title": "Encoding",
+            "type": "string"
+          },
+          "in": {
+            "title": "Socket",
+            "type": "Socket",
+            "async": true
+          }
+        },
+        "output": {
+          "out": {
+            "title": "Socket",
+            "type": "Socket"
+          }
+        }
+      },
+      "fn": "on.input.in = function() {\n  $.in.setEncoding($.encoding);\n  output({out: $.write('in', $.in)});\n}\n"
+    },
+    {
+      "name": "setKeepAlive",
+      "ns": "net/socket",
+      "title": "Set Keep Alive",
+      "async": true,
+      "description": "Set Keep Alive",
+      "phrases": {
+        "active": "Set keep alive"
+      },
+      "ports": {
+        "input": {
+          "enable": {
+            "title": "Enable",
+            "type": "boolean",
+            "default": true
+          },
+          "initialDelay": {
+            "title": "Initial Delay",
+            "type": "number",
+            "default": 0
+          },
+          "in": {
+            "title": "Socket",
+            "type": "Socket",
+            "async": true
+          }
+        },
+        "output": {
+          "out": {
+            "title": "Socket",
+            "type": "Socket"
+          }
+        }
+      },
+      "fn": "on.input.in = function() {\n  $.in.setKeepAlive($.enable, $.initialDelay);\n  output({out: $.write('in', $.in)});\n}\n"
+    },
+    {
+      "name": "setTimeout",
+      "ns": "net/socket",
+      "title": "Set Timeout",
+      "async": true,
+      "description": "Set Timeout",
+      "phrases": {
+        "active": "Set Timeout"
+      },
+      "ports": {
+        "input": {
+          "timeout": {
+            "title": "Timeout",
+            "type": "number",
+            "default": "3000"
+          },
+          "in": {
+            "title": "Socket",
+            "type": "Socket",
+            "async": true
+          }
+        },
+        "output": {
+          "out": {
+            "title": "Socket",
+            "type": "Socket"
+          }
+        }
+      },
+      "fn": "on.input.in = function() {\n  $.in.setTimeout($.timeout);\n\n  $.in.on('timeout', function () {\n    $.in.end();\n  });\n\n  output({out: $.write('in', $.in)});\n}\n"
+    },
+    {
+      "name": "write",
+      "ns": "net/socket",
+      "title": "Socket Write",
+      "async": true,
+      "description": "Write to socket",
+      "phrases": {
+        "active": "Writing to socket"
+      },
+      "ports": {
+        "input": {
+          "data": {
+            "title": "Data",
+            "type": "any"
+          },
+          "encoding": {
+            "title": "Encoding",
+            "type": "any",
+            "default": "utf8"
+          },
+          "in": {
+            "title": "Socket",
+            "type": "Socket",
+            "async": true
+          }
+        },
+        "output": {
+          "out": {
+            "title": "Socket",
+            "type": "Socket"
+          }
+        }
+      },
+      "fn": "on.input.in = function() {\n  $.in.write($.data, $.encoding, function () {\n    output({out: $.write('in', $.in)});\n  });\n}\n"
+    }
+  ]
+}

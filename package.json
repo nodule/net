@@ -1,0 +1,24 @@
+{
+  "name": "chix-net",
+  "description": "Net for Chiχ",
+  "author": "Rob Halff <rob.halff@gmail.com>",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nodule/net.git"
+  },
+  "engines": {
+    "node": ">=0.6.0"
+  },
+  "scripts": {
+    "test": "chit -r"
+  },
+  "devDependencies": {
+    "chit": "0.x.x"
+  },
+  "chix": {
+    "name": "net",
+    "color": "rgb(136,0,35)"
+  }
+}

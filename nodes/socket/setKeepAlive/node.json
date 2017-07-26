@@ -1,0 +1,35 @@
+{
+  "name": "setKeepAlive",
+  "ns": "net/socket",
+  "title": "Set Keep Alive",
+  "async": true,
+  "description": "Set Keep Alive",
+  "phrases": {
+    "active": "Set keep alive"
+  },
+  "ports": {
+    "input": {
+      "enable": {
+        "title": "Enable",
+        "type": "boolean",
+        "default": true
+      },
+      "initialDelay": {
+        "title": "Initial Delay",
+        "type": "number",
+        "default": 0
+      },
+      "in": {
+        "title": "Socket",
+        "type": "Socket",
+        "async": true
+      }
+    },
+    "output": {
+      "out": {
+        "title": "Socket",
+        "type": "Socket"
+      }
+    }
+  }
+}

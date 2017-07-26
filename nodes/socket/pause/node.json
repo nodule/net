@@ -1,0 +1,25 @@
+{
+  "name": "pause",
+  "ns": "net/socket",
+  "title": "Pause",
+  "async": true,
+  "description": "Pause Socket",
+  "phrases": {
+    "active": "Pausing socket"
+  },
+  "ports": {
+    "input": {
+      "in": {
+        "title": "Socket",
+        "type": "Socket",
+        "async": true
+      }
+    },
+    "output": {
+      "out": {
+        "title": "Socket",
+        "type": "Socket"
+      }
+    }
+  }
+}

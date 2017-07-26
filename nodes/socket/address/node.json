@@ -1,0 +1,29 @@
+{
+  "name": "address",
+  "ns": "net/socket",
+  "title": "Address",
+  "async": true,
+  "description": "Socket Address",
+  "phrases": {
+    "active": "Retrieving socket address"
+  },
+  "ports": {
+    "input": {
+      "in": {
+        "title": "Socket",
+        "type": "Socket",
+        "async": true
+      }
+    },
+    "output": {
+      "out": {
+        "title": "Socket",
+        "type": "Socket"
+      },
+      "address": {
+        "title": "Address",
+        "type": "object"
+      }
+    }
+  }
+}
