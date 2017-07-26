@@ -1,6 +1,6 @@
 {
   "name": "write",
-  "ns": "net/socket",
+  "ns": "socket",
   "title": "Socket Write",
   "async": true,
   "description": "Write to socket",

@@ -1,6 +1,6 @@
 {
   "name": "setKeepAlive",
-  "ns": "net/socket",
+  "ns": "socket",
   "title": "Set Keep Alive",
   "async": true,
   "description": "Set Keep Alive",

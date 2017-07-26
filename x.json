@@ -178,7 +178,7 @@
     },
     {
       "name": "address",
-      "ns": "net/socket",
+      "ns": "socket",
       "title": "Address",
       "async": true,
       "description": "Socket Address",
@@ -208,7 +208,7 @@
     },
     {
       "name": "pause",
-      "ns": "net/socket",
+      "ns": "socket",
       "title": "Pause",
       "async": true,
       "description": "Pause Socket",
@@ -234,7 +234,7 @@
     },
     {
       "name": "resume",
-      "ns": "net/socket",
+      "ns": "socket",
       "title": "Resume",
       "async": true,
       "description": "Resume Socket",
@@ -260,7 +260,7 @@
     },
     {
       "name": "setEncoding",
-      "ns": "net/socket",
+      "ns": "socket",
       "title": "Set Encoding",
       "async": true,
       "description": "Set Socket Encoding",
@@ -290,7 +290,7 @@
     },
     {
       "name": "setKeepAlive",
-      "ns": "net/socket",
+      "ns": "socket",
       "title": "Set Keep Alive",
       "async": true,
       "description": "Set Keep Alive",
@@ -326,7 +326,7 @@
     },
     {
       "name": "setTimeout",
-      "ns": "net/socket",
+      "ns": "socket",
       "title": "Set Timeout",
       "async": true,
       "description": "Set Timeout",
@@ -357,7 +357,7 @@
     },
     {
       "name": "write",
-      "ns": "net/socket",
+      "ns": "socket",
       "title": "Socket Write",
       "async": true,
       "description": "Write to socket",

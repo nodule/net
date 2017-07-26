@@ -1,6 +1,6 @@
 module.exports = {
   name: "resume",
-  ns: "net/socket",
+  ns: "socket",
   title: "Resume",
   async: true,
   description: "Resume Socket",

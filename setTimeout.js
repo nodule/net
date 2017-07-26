@@ -1,6 +1,6 @@
 module.exports = {
   name: "setTimeout",
-  ns: "net/socket",
+  ns: "socket",
   title: "Set Timeout",
   async: true,
   description: "Set Timeout",

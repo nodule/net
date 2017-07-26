@@ -1,6 +1,6 @@
 module.exports = {
   name: "setEncoding",
-  ns: "net/socket",
+  ns: "socket",
   title: "Set Encoding",
   async: true,
   description: "Set Socket Encoding",
