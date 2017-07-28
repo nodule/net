@@ -1,30 +1,31 @@
-on.input.options = function () {
+output = function () {
   var client = net.createConnection($.options, function () {
-    output({out: $.create(client)});
+    cb({out: $.create(client)});
   });
 
   client.on('connect', function () {
-    output({connect: $.create(client)});
+    cb({connect: $.create(client)});
   });
 
   client.on('data', function (data) {
-    output({data: $.create(data)});
+    cb({data: $.create(data)});
+    client.end();
   });
 
   client.on('drain', function () {
-    output({drain: $.create(client)});
+    cb({drain: $.create(client)});
   });
 
   client.on('end', function () {
-    output({end: $.create(client)});
+    cb({end: $.create(client)});
   });
 
   client.on('error', function (error) {
-    output({error: $.create(error)});
+    cb({error: $.create(error)});
   });
 
   client.on('lookup', function (err, address, family, host) {
-    output({
+    cb({
       lookup: $.create({
         error: err,
         address: address,
@@ -35,6 +36,6 @@ on.input.options = function () {
   });
 
   client.on('timeout', function () {
-    output({timeout: $.create(client)});
+    cb({timeout: $.create(client)});
   });
 };
