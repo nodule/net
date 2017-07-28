@@ -1,0 +1,339 @@
+{
+  "dependencies": {
+    "npm": {
+      "net": "internal",
+      "mustache": "latest"
+    }
+  },
+  "nodeDefinitions": {
+    "https://api.chix.io/nodes/{ns}/{name}": {
+      "console": {
+        "log": {
+          "_id": "57d2deaeba58aac5a47149de",
+          "name": "log",
+          "ns": "console",
+          "description": "Console log",
+          "async": true,
+          "phrases": {
+            "active": "Logging to console"
+          },
+          "ports": {
+            "input": {
+              "msg": {
+                "type": "any",
+                "title": "Log message",
+                "description": "Logs a message to the console",
+                "async": true,
+                "required": true
+              }
+            },
+            "output": {
+              "out": {
+                "type": "any",
+                "title": "Log message"
+              }
+            }
+          },
+          "fn": "on.input.msg = function() {\n  console.log($.msg);\n  output( { out: $.get('msg') });\n}\n",
+          "provider": "https://api.chix.io/nodes/{ns}/{name}",
+          "title": "SocketLog"
+        }
+      },
+      "net": {
+        "createConnection": {
+          "_id": "59788e7030c53b8d27eb9bb9",
+          "name": "createConnection",
+          "ns": "net",
+          "description": "createConnection",
+          "phrases": {
+            "active": "establishing connection"
+          },
+          "ports": {
+            "input": {
+              "connectListener": {
+                "type": "function",
+                "required": false
+              },
+              "options": {
+                "type": "object",
+                "async": true,
+                "properties": {
+                  "timeout": {
+                    "type": "number",
+                    "required": false
+                  },
+                  "fd": {
+                    "title": "File Descriptor",
+                    "type": "number",
+                    "required": false
+                  },
+                  "allowHalfOpen": {
+                    "type": "boolean",
+                    "required": false
+                  },
+                  "readable": {
+                    "type": "boolean",
+                    "required": false
+                  },
+                  "writeable": {
+                    "type": "boolean",
+                    "required": false
+                  },
+                  "port": {
+                    "type": "boolean",
+                    "required": true
+                  },
+                  "host": {
+                    "type": "string",
+                    "default": "localhost"
+                  },
+                  "localAddress": {
+                    "type": "string",
+                    "required": false
+                  },
+                  "localPort": {
+                    "type": "number",
+                    "required": false
+                  },
+                  "family": {
+                    "type": "enum",
+                    "enum": [
+                      4,
+                      6
+                    ],
+                    "default": 4
+                  },
+                  "hints": {
+                    "type": "number",
+                    "required": false
+                  },
+                  "lookup": {
+                    "type": "function",
+                    "required": false
+                  }
+                }
+              }
+            },
+            "output": {
+              "out": {
+                "title": "Socket",
+                "type": "Socket"
+              },
+              "close": {
+                "title": "Close",
+                "type": "boolean"
+              },
+              "connect": {
+                "title": "Connect",
+                "type": "any"
+              },
+              "data": {
+                "title": "Data",
+                "type": "any"
+              },
+              "drain": {
+                "title": "Drain",
+                "type": "any"
+              },
+              "end": {
+                "title": "End",
+                "type": "any"
+              },
+              "lookup": {
+                "title": "Lookup",
+                "type": "object",
+                "properties": {
+                  "error": {
+                    "type": "Error"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "family": {
+                    "type": "string"
+                  },
+                  "host": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "dependencies": {
+            "npm": {
+              "net": "internal"
+            }
+          },
+          "fn": "on.input.options = function () {\n  var client = net.createConnection($.options, function () {\n    output({out: $.create(client)});\n  });\n\n  client.on('connect', function () {\n    output({connect: $.create(client)});\n  });\n\n  client.on('data', function (data) {\n    output({data: $.create(data)});\n  });\n\n  client.on('drain', function () {\n    output({drain: $.create(client)});\n  });\n\n  client.on('end', function () {\n    output({end: $.create(client)});\n  });\n\n  client.on('error', function (error) {\n    output({error: $.create(error)});\n  });\n\n  client.on('lookup', function (err, address, family, host) {\n    output({\n      lookup: $.create({\n        error: err,\n        address: address,\n        family: family,\n        host: host\n      })\n    });\n  });\n\n  client.on('timeout', function () {\n    output({timeout: $.create(client)});\n  });\n};\n",
+          "async": true,
+          "provider": "https://api.chix.io/nodes/{ns}/{name}",
+          "title": "CreateConnection"
+        }
+      },
+      "socket": {
+        "write": {
+          "_id": "59788fd730c53b8d27eb9bc6",
+          "name": "write",
+          "ns": "socket",
+          "title": "SocketWrite",
+          "async": true,
+          "description": "Write to socket",
+          "phrases": {
+            "active": "Writing to socket"
+          },
+          "ports": {
+            "input": {
+              "data": {
+                "title": "Data",
+                "type": "any"
+              },
+              "encoding": {
+                "title": "Encoding",
+                "type": "any",
+                "default": "utf8"
+              },
+              "in": {
+                "title": "Socket",
+                "type": "Socket",
+                "async": true
+              }
+            },
+            "output": {
+              "out": {
+                "title": "Socket",
+                "type": "Socket"
+              }
+            }
+          },
+          "fn": "on.input.in = function() {\n  $.in.write($.data, $.encoding, function () {\n    output({out: $.write('in', $.in)});\n  });\n}\n",
+          "provider": "https://api.chix.io/nodes/{ns}/{name}"
+        },
+        "end": {
+          "_id": "5978944530c53b8d27eb9bc8",
+          "name": "end",
+          "ns": "socket",
+          "title": "SocketEnd",
+          "async": true,
+          "description": "End Socket",
+          "phrases": {
+            "active": "Closing socket"
+          },
+          "ports": {
+            "input": {
+              "in": {
+                "title": "Socket",
+                "type": "Socket",
+                "async": true
+              }
+            },
+            "output": {}
+          },
+          "fn": "on.input.in = function() {\n  $.in.end();\n  // ... destroy packet\n}\n",
+          "provider": "https://api.chix.io/nodes/{ns}/{name}"
+        }
+      },
+      "template": {
+        "mustache": {
+          "_id": "57d20cc6ba58aac5a47144d6",
+          "name": "mustache",
+          "ns": "template",
+          "description": "Mustache Template engine",
+          "phrases": {
+            "active": "Compiling mustache template"
+          },
+          "ports": {
+            "input": {
+              "body": {
+                "type": "string",
+                "format": "html",
+                "title": "Template body",
+                "description": "The body of the mustache template",
+                "required": true
+              },
+              "vars": {
+                "type": "object",
+                "title": "Input variables",
+                "description": "the input variables for this template",
+                "required": true,
+                "readonly": true
+              }
+            },
+            "output": {
+              "out": {
+                "title": "String",
+                "type": "string"
+              }
+            }
+          },
+          "dependencies": {
+            "npm": {
+              "mustache": "latest"
+            }
+          },
+          "fn": "output = {out: $.create(mustache.render($.body, $.vars))}\n",
+          "provider": "https://api.chix.io/nodes/{ns}/{name}",
+          "title": "Mustache"
+        }
+      },
+      "data": {
+        "string": {
+          "_id": "596f72d730c53b8d27eb9b65",
+          "name": "string",
+          "ns": "data",
+          "title": "ToString",
+          "async": true,
+          "description": "String",
+          "phrases": {
+            "active": "Creating string {{input.string}}"
+          },
+          "ports": {
+            "input": {
+              "in": {
+                "title": "String",
+                "type": "any",
+                "async": true,
+                "required": true
+              }
+            },
+            "output": {
+              "out": {
+                "title": "out",
+                "type": "string"
+              }
+            }
+          },
+          "fn": "on.input.in = function() {\n  output( { out: $.write('in', typeof $.in === null ? 'null' : $.in.toString()) });\n};\n",
+          "provider": "https://api.chix.io/nodes/{ns}/{name}"
+        }
+      },
+      "utils": {
+        "dummy": {
+          "_id": "57d2deaeba58aac5a47149e1",
+          "name": "dummy",
+          "ns": "utils",
+          "title": "Dummy",
+          "description": "Takes an input and passes it to output.",
+          "phrases": {
+            "active": "Dummy"
+          },
+          "ports": {
+            "input": {
+              "in": {
+                "type": "any",
+                "title": "Input"
+              }
+            },
+            "output": {
+              "out": {
+                "type": "any",
+                "title": "Output"
+              }
+            }
+          },
+          "fn": "output.out = $.get('in')\n",
+          "provider": "https://api.chix.io/nodes/{ns}/{name}"
+        }
+      }
+    }
+  }
+}

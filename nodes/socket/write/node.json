@@ -11,7 +11,8 @@
     "input": {
       "data": {
         "title": "Data",
-        "type": "any"
+        "type": "any",
+        "async": true
       },
       "encoding": {
         "title": "Encoding",
@@ -20,8 +21,7 @@
       },
       "in": {
         "title": "Socket",
-        "type": "Socket",
-        "async": true
+        "type": "Socket"
       }
     },
     "output": {
