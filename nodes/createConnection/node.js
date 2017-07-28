@@ -1,4 +1,4 @@
-output = function () {
+output = function (cb) {
   var client = net.createConnection($.options, function () {
     cb({out: $.create(client)});
   });
