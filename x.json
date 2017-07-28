@@ -11,7 +11,6 @@
       "name": "createConnection",
       "ns": "net",
       "description": "createConnection",
-      "async": true,
       "phrases": {
         "active": "establishing connection"
       },
@@ -23,7 +22,6 @@
           },
           "options": {
             "type": "object",
-            "async": true,
             "properties": {
               "timeout": {
                 "type": "number",
@@ -131,7 +129,7 @@
           "net": "internal"
         }
       },
-      "fn": "on.input.options = function () {\n  var client = net.createConnection($.options, function () {\n    output({out: $.create(client)});\n  });\n\n  client.on('connect', function () {\n    output({connect: $.create(client)});\n  });\n\n  client.on('data', function (data) {\n    output({data: $.create(data)});\n  });\n\n  client.on('drain', function () {\n    output({drain: $.create(client)});\n  });\n\n  client.on('end', function () {\n    output({end: $.create(client)});\n  });\n\n  client.on('error', function (error) {\n    output({error: $.create(error)});\n  });\n\n  client.on('lookup', function (err, address, family, host) {\n    output({\n      lookup: $.create({\n        error: err,\n        address: address,\n        family: family,\n        host: host\n      })\n    });\n  });\n\n  client.on('timeout', function () {\n    output({timeout: $.create(client)});\n  });\n};\n"
+      "fn": "output = function () {\n  var client = net.createConnection($.options, function () {\n    cb({out: $.create(client)});\n  });\n\n  client.on('connect', function () {\n    cb({connect: $.create(client)});\n  });\n\n  client.on('data', function (data) {\n    cb({data: $.create(data)});\n    client.end();\n  });\n\n  client.on('drain', function () {\n    cb({drain: $.create(client)});\n  });\n\n  client.on('end', function () {\n    cb({end: $.create(client)});\n  });\n\n  client.on('error', function (error) {\n    cb({error: $.create(error)});\n  });\n\n  client.on('lookup', function (err, address, family, host) {\n    cb({\n      lookup: $.create({\n        error: err,\n        address: address,\n        family: family,\n        host: host\n      })\n    });\n  });\n\n  client.on('timeout', function () {\n    cb({timeout: $.create(client)});\n  });\n};\n"
     },
     {
       "name": "address",

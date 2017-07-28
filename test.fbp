@@ -3,6 +3,7 @@ SocketLog(console/log)
 CreateConnection(net/createConnection)
 SocketWrite(socket/write)
 SocketEnd(socket/end)
+SocketDrain(socket/drain)
 Mustache(template/mustache)
 ToString(data/string)
 Dummy(utils/dummy)
@@ -11,24 +12,20 @@ Dummy(utils/dummy)
 
 'DEFINE spa-eng {{word}}' -> @body Mustache
 
-'' -> :start SocketWrite
+# '' -> :start SocketWrite
 
-{
- "word": "casa"
-} -> vars Mustache
-{
-  "word": "fiesta"
-} -> vars Mustache
+{ "word": "casa" } -> vars Mustache
 
 Mustache out -> data SocketWrite
 
 CreateConnection out -> ^in SocketWrite
-# CreateConnection out -> ^in SocketEnd
+CreateConnection out -> ^in SocketEnd
+CreateConnection out -> ^in SocketDrain
 
-'Got data' -> @msg SocketLog
+# 'Got data' -> @msg SocketLog
 
 CreateConnection data -> in ToString out -> msg Log
-CreateConnection data -> :start SocketLog
+# CreateConnection data -> :start SocketLog
 
-SocketWrite :complete -> :start SocketWrite
+SocketWrite :complete -> :start SocketDrain
 

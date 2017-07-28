@@ -3,7 +3,11 @@ const port = 2628; // dict
 const word = 'nada';
 
 const client = net.createConnection({ port: port }, () => {
-  client.write(`DEFINE spa-eng ${word}\r\n`);
+  client.write(`DEFINE spa-eng ${word}\r\n`, function() {
+    client.write(`DEFINE spa-eng fiesta\r\n`, function() {
+      client.write(`DEFINE spa-eng mujer\r\n`);
+    });
+  });
 });
 
 let i = 0;
@@ -13,6 +17,7 @@ const regString = `\r\n151.*\r\n(.*)\r\n (.*)`
 const regExp = new RegExp(regString, 'm')
 
 client.on('data', (data) => {
+  console.log('got data');
   const res =
     data
     .toString()
@@ -27,7 +32,7 @@ client.on('data', (data) => {
     );
   }
 
-  client.end();
+  // client.end();
 });
-client.on('end', () => {
-});
+
+client.on('end', () => { });
