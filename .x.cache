@@ -36,7 +36,7 @@
           },
           "fn": "on.input.msg = function() {\n  console.log($.msg);\n  output( { out: $.get('msg') });\n}\n",
           "provider": "https://api.chix.io/nodes/{ns}/{name}",
-          "title": "SocketLog"
+          "title": "Log"
         }
       },
       "net": {
@@ -56,7 +56,6 @@
               },
               "options": {
                 "type": "object",
-                "async": true,
                 "properties": {
                   "timeout": {
                     "type": "number",
@@ -164,8 +163,7 @@
               "net": "internal"
             }
           },
-          "fn": "on.input.options = function () {\n  setInterval(function() { console.log('still running?'); }, 1000); var client = net.createConnection($.options, function () {\n    output({out: $.create(client)});\n  });\n\n  client.on('connect', function () {\n  console.log('connected!');  output({connect: $.create(client)});\n  });\n\n  client.on('data', function (data) {\n  console.log('GOT DATA', data.toString());  output({data: $.create(data)});\n  });\n\n  client.on('drain', function () {\n  console.log('DRAIN!');   output({drain: $.create(client)});\n  });\n\n  client.on('end', function () {\n console.log('end socket!');   output({end: $.create(client)});\n  });\n\n  client.on('error', function (error) {\n console.log('ERROR', error);    output({error: $.create(error)});\n  });\n\n  client.on('lookup', function (err, address, family, host) {\n    output({\n      lookup: $.create({\n        error: err,\n        address: address,\n        family: family,\n        host: host\n      })\n    });\n  });\n\n  client.on('timeout', function () {\n    output({timeout: $.create(client)});\n  });\n};\n",
-          "async": true,
+          "fn": "output = function () {\n  var client = net.createConnection($.options, function () {\n  console.log('create connection');   cb({out: $.create(client)});\n  });\n\n  client.on('connect', function () {\n    cb({connect: $.create(client)});\n  });\n\n  client.on('data', function (data) {\n    cb({data: $.create(data)});\n    \n  });\n\n  client.on('drain', function () {\n    cb({drain: $.create(client)});\n  });\n\n  client.on('end', function () {\n    cb({end: $.create(client)});\n  });\n\n  client.on('error', function (error) {\n    cb({error: $.create(error)});\n  });\n\n  client.on('lookup', function (err, address, family, host) {\n    cb({\n      lookup: $.create({\n        error: err,\n        address: address,\n        family: family,\n        host: host\n      })\n    });\n  });\n\n  client.on('timeout', function () {\n    cb({timeout: $.create(client)});\n  });\n};\n",
           "provider": "https://api.chix.io/nodes/{ns}/{name}",
           "title": "CreateConnection"
         }
@@ -205,30 +203,7 @@
               }
             }
           },
-          "fn": "on.input.data = function() {\n console.log('writing data'); $.in.write($.data, $.encoding, function () {\n console.log('wrotedata', JSON.stringify($.data));    output({out: $.write('in', $.in)});\n  });\n}\n",
-          "provider": "https://api.chix.io/nodes/{ns}/{name}"
-        },
-        "end": {
-          "_id": "5978944530c53b8d27eb9bc8",
-          "name": "end",
-          "ns": "socket",
-          "title": "SocketEnd",
-          "async": true,
-          "description": "End Socket",
-          "phrases": {
-            "active": "Closing socket"
-          },
-          "ports": {
-            "input": {
-              "in": {
-                "title": "Socket",
-                "type": "Socket",
-                "async": true
-              }
-            },
-            "output": {}
-          },
-          "fn": "on.input.in = function() {\n  $.in.end();\n  // ... destroy packet\n}\n",
+          "fn": "on.input.data = function() {\n  $.in.write($.data, $.encoding, function () {\n    output({out: $.write('in', $.in)});\n  });\n}\n",
           "provider": "https://api.chix.io/nodes/{ns}/{name}"
         }
       },
