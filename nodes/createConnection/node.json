@@ -2,6 +2,7 @@
   "name": "createConnection",
   "ns": "net",
   "description": "createConnection",
+  "async": true,
   "phrases": {
     "active": "establishing connection"
   },
@@ -13,6 +14,7 @@
       },
       "options": {
         "type": "object",
+        "async": true,
         "properties": {
            "timeout": {
              "type": "number",

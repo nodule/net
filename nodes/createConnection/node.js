@@ -1,30 +1,30 @@
-output = function (cb) {
+on.input.options = function () {
   var client = net.createConnection($.options, function () {
-    cb({out: $.create(client)});
+    output({out: $.create(client)});
   });
 
   client.on('connect', function () {
-    cb({connect: $.create(client)});
+    output({connect: $.create(client)});
   });
 
   client.on('data', function (data) {
-    cb({data: $.create(data)});
+    output({data: $.create(data)});
   });
 
   client.on('drain', function () {
-    cb({drain: $.create(client)});
+    output({drain: $.create(client)});
   });
 
   client.on('end', function () {
-    cb({end: $.create(client)});
+    output({end: $.create(client)});
   });
 
   client.on('error', function (error) {
-    cb({error: $.create(error)});
+    output({error: $.create(error)});
   });
 
   client.on('lookup', function (err, address, family, host) {
-    cb({
+    output({
       lookup: $.create({
         error: err,
         address: address,
@@ -35,6 +35,6 @@ output = function (cb) {
   });
 
   client.on('timeout', function () {
-    cb({timeout: $.create(client)});
+    output({timeout: $.create(client)});
   });
 };

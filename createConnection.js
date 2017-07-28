@@ -2,6 +2,7 @@ module.exports = {
   name: "createConnection",
   ns: "net",
   description: "createConnection",
+  async: true,
   phrases: {
     active: "establishing connection"
   },
@@ -13,6 +14,7 @@ module.exports = {
       },
       options: {
         type: "object",
+        async: true,
         properties: {
           timeout: {
             type: "number",
@@ -66,6 +68,66 @@ module.exports = {
             type: "function",
             required: false
           }
+        },
+        fn: function __OPTIONS__(data, source, state, input, $, output, net) {
+          var r = function() {
+            var client = net.createConnection($.options, function() {
+              output({
+                out: $.create(client)
+              });
+            });
+
+            client.on('connect', function() {
+              output({
+                connect: $.create(client)
+              });
+            });
+
+            client.on('data', function(data) {
+              output({
+                data: $.create(data)
+              });
+            });
+
+            client.on('drain', function() {
+              output({
+                drain: $.create(client)
+              });
+            });
+
+            client.on('end', function() {
+              output({
+                end: $.create(client)
+              });
+            });
+
+            client.on('error', function(error) {
+              output({
+                error: $.create(error)
+              });
+            });
+
+            client.on('lookup', function(err, address, family, host) {
+              output({
+                lookup: $.create({
+                  error: err,
+                  address: address,
+                  family: family,
+                  host: host
+                })
+              });
+            });
+
+            client.on('timeout', function() {
+              output({
+                timeout: $.create(client)
+              });
+            });
+          }.call(this);
+          return {
+            state: state,
+            return: r
+          };
         }
       }
     },
@@ -119,66 +181,5 @@ module.exports = {
       net: require('net')
     }
   },
-  fn: function createConnection(input, $, output, state, done, cb, on, net) {
-    var r = function() {
-      var client = net.createConnection($.options, function() {
-        output({
-          out: $.create(client)
-        });
-      });
-
-      client.on('connect', function() {
-        output({
-          connect: $.create(client)
-        });
-      });
-
-      client.on('data', function(data) {
-        output({
-          data: $.create(data)
-        });
-      });
-
-      client.on('drain', function() {
-        output({
-          drain: $.create(client)
-        });
-      });
-
-      client.on('end', function() {
-        output({
-          end: $.create(client)
-        });
-      });
-
-      client.on('error', function(error) {
-        output({
-          error: $.create(error)
-        });
-      });
-
-      client.on('lookup', function(err, address, family, host) {
-        output({
-          lookup: $.create({
-            error: err,
-            address: address,
-            family: family,
-            host: host
-          })
-        });
-      });
-
-      client.on('timeout', function() {
-        output({
-          timeout: $.create(client)
-        });
-      });
-    }.call(this);
-    return {
-      output: output,
-      state: state,
-      on: on,
-      return: r
-    };
-  }
+  state: {}
 }
