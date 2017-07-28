@@ -12,6 +12,8 @@ ToString(data/string)
 
 Mustache out -> data SocketWrite
 
+Mustache out -> msg Log
+
 CreateConnection out -> in SocketWrite
 
 CreateConnection data -> in ToString out -> msg Log
